@@ -1,0 +1,214 @@
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+// Include theme-specific fonts
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,600;1,700;1,800;1,900&family=Barlow:wght@100;500;900&display=swap");
+
+// Override theme settings (see ../template/settings.scss)
+$mainColor: #bb1c27;
+$headingColor: #bb1c27;
+$headingTextShadow: none;
+$backgroundColor: #fffaee;
+$linkColor: #8b743d;
+$linkColorHover: lighten($linkColor, 20%);
+$selectionBackgroundColor: rgba(79, 64, 28, 0.99);
+// $heading1TextShadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb,
+//   0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, 0.1),
+//   0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3),
+//   0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25),
+//   0 20px 20px rgba(0, 0, 0, 0.15);
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
+
+/*
+* Colors
+*/
+
+$avril: #00d323;
+$mai: #f3f0d1;
+$juin: #f7de1c;
+$light-avril: #defea7;
+$carbon: #2d2d35;
+
+$roma: #bb1c27;
+
+/*
+* Typography
+*/
+$font-base: 16px;
+
+$ratios: (
+  gold: 1.618,
+  des: 1.5,
+  mob: 1.9,
+);
+
+$one-ratio: 1.618;
+
+$measures: (
+  rocco: 5,
+  biggest: 4,
+  bigger: 2.8,
+  big: 2,
+  quite-nor: 1.5,
+  nor: 1,
+  sm: 0.75,
+  xsm: 0.5,
+  xxsmall: 0.25,
+);
+
+@function fontsize($ratio, $measure, $base) {
+  $size: ($measure * $ratio) * $base;
+  @return $size;
+}
+
+@mixin fontDef($type: "mainHeading", $color: $carbon) {
+  text-align: left;
+  line-height: calc(2px + 2ex + 2px);
+  color: $color;
+  @if $type == "mainHeading" {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    font-size: fontsize(
+      map-get($ratios, gold),
+      map-get($measures, biggest),
+      $font-base
+    );
+  } @else if $type == "subHeading" {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: fontsize(
+      map-get($ratios, gold),
+      map-get($measures, bigger),
+      $font-base
+    );
+  } @else if $type == "author" {
+    font-family: "Barlow", sans-serif;
+    font-size: fontsize(
+      map-get($ratios, gold),
+      map-get($measures, quite-nor),
+      $font-base
+    );
+    color: $color;
+  } @else if $type == "paragraph" {
+    font-family: "Barlow", sans-serif;
+    font-size: fontsize(
+      map-get($ratios, gold),
+      map-get($measures, quite-nor),
+      $font-base
+    );
+  } @else if $type == "link" {
+    font-family: "Barlow", sans-serif;
+    font-size: fontsize(
+      map-get($ratios, gold),
+      map-get($measures, nor),
+      $font-base
+    );
+  }
+}
+
+body {
+  background-color: $juin;
+  background-color: $light-avril;
+  background-color: #fea575;
+}
+
+h1.mainHeading {
+  @include fontDef("mainHeading", $roma);
+  text-transform: initial;
+  margin-bottom: 2rem;
+
+  &.mainHeading--alteranative {
+    @include fontDef("mainHeading", $carbon);
+  }
+}
+
+p.subTitle {
+  @include fontDef("paragraph", $carbon);
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+h2.heading {
+  @include fontDef("subHeading", $carbon);
+  text-transform: initial;
+}
+
+ul.list {
+  @include fontDef("paragraph", $carbon);
+  width: 100%;
+  list-style-position: inside;
+}
+
+li.list__Item {
+  @include fontDef("subHeading", $carbon);
+}
+
+p.paragraph,
+a {
+  display: block;
+  @include fontDef("subHeading", $carbon);
+  text-align: left;
+
+  &--end {
+    text-align: right;
+  }
+}
+
+a.info {
+  display: block;
+  @include fontDef("link", $roma);
+  text-align: center;
+}
+
+p.tertiaryInfo {
+  @include fontDef("paragraph", $carbon);
+
+  &--centered {
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.content-example {
+  display: grid;
+  gap: 2rem;
+
+  &--left {
+    grid-template-columns: 2fr 1fr;
+    // grid-template-rows: repeat(1fr);
+    // grid-template:
+    //   [row1-start] "top top" [row1-end]
+    //   [row2-start] "middle middle" [row2-end]
+    //   [row2-start] "down down" [row2-end]
+    //   / 2fr 1fr;
+  }
+
+  &--right {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.grid-image {
+  place-self: center stretch;
+  max-width: 450px;
+}
+
+.gif.gif {
+  max-width: 250px;
+  box-shadow: 20px 20px #7d7171;
+}
+.image.image {
+  max-width: 450px;
+  box-shadow: 20px 20px #7d7171;
+}
